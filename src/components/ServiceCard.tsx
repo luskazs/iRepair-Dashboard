@@ -2,11 +2,20 @@ import type { ServiceOrder } from "../types";
 
 interface ServiceCardProps {
   os: ServiceOrder;
+  onDelete: (id: number) => void;
 }
 
-export const ServiceCard = ({ os }: ServiceCardProps) => {
+export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-colors">
+    <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-colors relative group">
+      <button 
+        onClick={() => onDelete(os.id)}
+        className="absolute top-3 right-3 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-400"
+        title="Delete Order"
+      >
+        Excluir
+      </button>
+
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
           {os.status}

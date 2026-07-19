@@ -11,6 +11,17 @@ export const ServiceOrders = () => {
   const [issue, setIssue] = useState("");
   const [clientId, setClientId] = useState("");
 
+  const handleDelete = async (id: number) => {
+    if (confirm("Tem certeza que deseja excluir esta ordem?")) {
+      try {
+        await api.delete(`/service-orders/${id}`);
+        fetchData();
+      } catch (error) {
+        console.error("Erro ao deletar:", error);
+      }
+    }
+  };
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -19,12 +30,11 @@ export const ServiceOrders = () => {
         api.get<Client[]>("/clients"),
       ]);
 
-      
       const ordersWithClients = ordersRes.data.map((order) => {
         const foundClient = clientsRes.data.find((c) => c.id === order.client_id);
         return {
           ...order,
-          client: foundClient, 
+          client: foundClient,
         };
       });
 
@@ -53,9 +63,10 @@ export const ServiceOrders = () => {
       setDevice("");
       setIssue("");
       setClientId("");
-      fetchData();
+      fetchData(); 
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao criar ordem:", error);
+      alert("Erro ao criar a ordem. Verifique os dados.");
     }
   };
 
@@ -107,7 +118,7 @@ export const ServiceOrders = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {orders.map((os) => (
-            <ServiceCard key={os.id} os={os} />
+            <ServiceCard key={os.id} os={os} onDelete={handleDelete} />
           ))}
         </div>
       )}
