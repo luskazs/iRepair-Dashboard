@@ -14,11 +14,11 @@ export const ServiceCard = ({ os }: ServiceCardProps) => {
         <span className="text-xs text-slate-500">ID: #{os.id}</span>
       </div>
 
-      <h3 className="text-lg font-bold text-slate-100 mb-1">{os.client?.name || "No Client"}</h3>
-      <p className="text-sm font-medium text-slate-400 mb-3">{os.deviceModel}</p>
+      <h3 className="text-lg font-bold text-slate-100 mb-1">{os.client?.name || "Cliente ID: " + os.client_id}</h3>
+      <p className="text-sm font-medium text-slate-400 mb-3">{os.device}</p>
       
       <p className="text-sm text-slate-400 bg-slate-950/50 p-3 rounded-lg border border-slate-850 line-clamp-3">
-        {os.description}
+        {os.issue}
       </p>
     </div>
   );

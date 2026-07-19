@@ -8,8 +8,9 @@ export interface Client {
 
 export interface ServiceOrder {
   id: number;
-  deviceModel: string;
-  description: string;
+  client_id: number;
+  device: string;
+  issue: string;
   status: string;
-  client: Client;
+  client?: Client;
 }
