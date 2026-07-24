@@ -1,11 +1,38 @@
-import type { ServiceOrder } from "../types";
-
+import type { ServiceOrder, ServiceStatus } from "../types";
+// A interface define o contrato do componente. Ela garante via TypeScript 
+// que o componente pai (ex: Dashboard) passe exatamente as props necessárias 
+// (um objeto ServiceOrder e uma função onDelete), evitando bugs de tipagem.
 interface ServiceCardProps {
   os: ServiceOrder;
   onDelete: (id: number) => void;
 }
+function getStatusLabel(status: ServiceStatus) {
+  switch(status) {
+    case "open":
+      return "Aberto";
 
+    case "in_progress":
+      return "Em andamento";
+
+    case "done":
+      return "Finalizado";
+  }
+}
+function getStatusStyle(status: ServiceStatus) {
+  switch(status) {
+    case "open":
+      return "bg-blue-500/10 text-blue-400 border-blue-500/20";
+
+    case "in_progress":
+      return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
+
+    case "done":
+      return "bg-green-500/10 text-green-400 border-green-500/20";
+  }
+}
+//Crie um componente chamado ServiceCard. Ele recebe um objeto de props que segue a interface ServiceCardProps e, ao recebê-lo, extraia imediatamente as propriedades os e onDelete para que possam ser usadas diretamente dentro do componente."
 export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
+  //em onClick, temos uma arrow function assim () => onDelete(os.id), aqui a gente ta  passando a funcao, então se fosse só assim onClick = {onDelete(os.id)}, a funcao ia ser executada automaticamente, aí ela ja seria deletada sem nem ter clicado. Como onDelete = handleDelete, aí a gente executa a funcao que ta la no dashboard
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-colors relative group">
       <button 
@@ -17,8 +44,8 @@ export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
       </button>
 
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-          {os.status}
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${getStatusStyle(os.status)}`}>
+          {getStatusLabel(os.status)}
         </span>
         <span className="text-xs text-slate-500">ID: #{os.id}</span>
       </div>

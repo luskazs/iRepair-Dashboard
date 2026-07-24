@@ -11,6 +11,11 @@ export interface ServiceOrder {
   client_id: number;
   device: string;
   issue: string;
-  status: string;
+  status: ServiceStatus;
   client?: Client;
 }
+
+export type ServiceStatus =
+  | "open"
+  | "in_progress"
+  | "done";
