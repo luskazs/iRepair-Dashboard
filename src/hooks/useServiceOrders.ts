@@ -1,8 +1,6 @@
-// src/hooks/useServiceOrders.ts
-
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import type { ServiceOrder, Client } from "../types";
+import type { Client, ServiceOrder } from "../types";
 
 export const useServiceOrders = () => {
   const [orders, setOrders] = useState<ServiceOrder[]>([]);
@@ -13,49 +11,31 @@ export const useServiceOrders = () => {
     try {
       setIsLoading(true);
 
-      const [ordersRes, clientsRes] = await Promise.all([
+      const [ordersResponse, clientsResponse] = await Promise.all([
         api.get<ServiceOrder[]>("/service-orders"),
         api.get<Client[]>("/clients"),
       ]);
 
-      const ordersWithClients = ordersRes.data.map((order) => ({
+      const ordersWithClients = ordersResponse.data.map((order) => ({
         ...order,
-        client: clientsRes.data.find(
+
+        client: clientsResponse.data.find(
           (client) => client.id === order.client_id
         ),
       }));
 
       setOrders(ordersWithClients);
-      setClients(clientsRes.data);
-
+      setClients(clientsResponse.data);
     } catch (error) {
-      console.error("Erro ao carregar ordens:", error);
-
+      console.error("Error loading service orders:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-
   useEffect(() => {
     void fetchOrders();
   }, []);
-
-
-  const deleteOrder = async (id: number) => {
-    if (!confirm("Tem certeza que deseja excluir esta ordem?")) {
-      return;
-    }
-
-    try {
-      await api.delete(`/service-orders/${id}`);
-      await fetchOrders();
-
-    } catch (error) {
-      console.error("Erro ao deletar ordem:", error);
-    }
-  };
-
 
   const createOrder = async (
     clientId: number,
@@ -71,20 +51,37 @@ export const useServiceOrders = () => {
       });
 
       await fetchOrders();
-
     } catch (error) {
-      console.error("Erro ao criar ordem:", error);
+      console.error("Error creating service order:", error);
       throw error;
     }
   };
 
+  const deleteOrder = async (id: number) => {
+    const shouldDelete = confirm(
+      "Tem certeza que quer excluir essa ordem de serviço?"
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    try {
+      await api.delete(`/service-orders/${id}`);
+
+      await fetchOrders();
+    } catch (error) {
+      console.error("Error deleting service order:", error);
+      throw error;
+    }
+  };
 
   return {
     orders,
     clients,
     isLoading,
-    deleteOrder,
     createOrder,
+    deleteOrder,
     refreshOrders: fetchOrders,
   };
 };

@@ -1,5 +1,5 @@
 import { ServiceCard } from "./ServiceCard";
-import type { ServiceOrder } from "../types";
+import type { ServiceOrder } from "../../types";
 
 
 interface ServiceOrderListProps {
@@ -32,7 +32,7 @@ export const ServiceOrderList = ({
 
       <p className="text-slate-400">
 
-        Loading orders...
+        Carregando pedidos...
 
       </p>
 
@@ -48,7 +48,7 @@ export const ServiceOrderList = ({
 
       <p className="text-slate-500 text-center py-8">
 
-        No service orders registered.
+        Nenhuma ordem de serviço registrada.
 
       </p>
 

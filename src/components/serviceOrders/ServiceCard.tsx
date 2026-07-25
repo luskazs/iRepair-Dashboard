@@ -1,4 +1,4 @@
-import type { ServiceOrder, ServiceStatus } from "../types";
+import type { ServiceOrder, ServiceStatus } from "../../types";
 // A interface define o contrato do componente. Ela garante via TypeScript 
 // que o componente pai (ex: Dashboard) passe exatamente as props necessárias 
 // (um objeto ServiceOrder e uma função onDelete), evitando bugs de tipagem.
@@ -33,6 +33,8 @@ function getStatusStyle(status: ServiceStatus) {
 //Crie um componente chamado ServiceCard. Ele recebe um objeto de props que segue a interface ServiceCardProps e, ao recebê-lo, extraia imediatamente as propriedades os e onDelete para que possam ser usadas diretamente dentro do componente."
 export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
   //em onClick, temos uma arrow function assim () => onDelete(os.id), aqui a gente ta  passando a funcao, então se fosse só assim onClick = {onDelete(os.id)}, a funcao ia ser executada automaticamente, aí ela ja seria deletada sem nem ter clicado. Como onDelete = handleDelete, aí a gente executa a funcao que ta la no dashboard
+
+  // na parte de ServiceCard = ({ os, onDelete }: ServiceCardProps), inves de fazer a seguinte tipagem: ServiceCard = (props: ServiceCardProps), e ficar usando props.os e props.onDelete, a gente ja tira de dentro do objeto o que a gente vai utilizar, ficando daquele jeito encima, então nao preciso escrever nada.nada, apenas o os e o onDelete
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-colors relative group">
       <button 

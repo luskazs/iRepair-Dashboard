@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Client } from "../types";
+import type { Client } from "../../types";
 
 
 interface NewServiceOrderFormProps {
@@ -48,7 +48,7 @@ export const NewServiceOrderForm = ({
 
           type="text"
 
-          placeholder="Device Model"
+          placeholder="Modelo do Aparelho"
 
           value={device}
 
@@ -66,7 +66,7 @@ export const NewServiceOrderForm = ({
 
           type="text"
 
-          placeholder="Description"
+          placeholder="Descrição"
 
           value={issue}
 
@@ -94,7 +94,7 @@ export const NewServiceOrderForm = ({
 
 
           <option value="">
-            Select a Client
+            Selecione um cliente
           </option>
 
 
@@ -128,7 +128,7 @@ export const NewServiceOrderForm = ({
 
       >
 
-        Create Order
+        Criar ordem
 
       </button>
 

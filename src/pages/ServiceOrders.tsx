@@ -1,18 +1,21 @@
-// src/pages/ServiceOrders.tsx
 
 import { useState } from "react";
 import { useServiceOrders } from "../hooks/useServiceOrders";
-import { NewServiceOrderForm } from "../components/NewServiceOrderForm";
-import { ServiceOrderList } from "../components/ServiceOrderList";
+import { NewServiceOrderForm } from "../components/serviceOrders/NewServiceOrderForm";
+import { ServiceOrderList } from "../components/serviceOrders/ServiceOrderList";
+import { useClients } from "../hooks/useClients";
 
 export const ServiceOrders = () => {
   const {
-    orders,
-    clients,
-    isLoading,
-    deleteOrder,
-    createOrder,
-  } = useServiceOrders();
+  orders,
+  isLoading,
+  createOrder,
+  deleteOrder,
+} = useServiceOrders();
+
+const {
+  clients,
+} = useClients();
 
 
   const [device, setDevice] = useState("");
@@ -27,12 +30,12 @@ export const ServiceOrders = () => {
   };
 
 
-  const handleCreateOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCreateOrder = async (e: React.FormEvent) => { //tipo de evento
+    e.preventDefault(); //pra n recarregar a pagina
 
     try {
       await createOrder(
-        Number(clientId),
+        Number(clientId), //converte pra numero
         device,
         issue
       );
@@ -48,7 +51,7 @@ export const ServiceOrders = () => {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-6 text-slate-200">
-        Service Orders
+        Ordens de Serviço
       </h2>
 
       <NewServiceOrderForm
