@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { ClientsService } from "./clients.service.js";
-
+import { AppError } from "../../utils/AppError.js";
 const clientsService = new ClientsService();
 
 export class ClientsController {
@@ -11,26 +11,38 @@ export class ClientsController {
   }
 
   async getById(req: Request, res: Response) {
-    const id = Number(req.params.id);
+  const id = Number(req.params.id);
 
-    const client = await clientsService.getById(id);
-
-    return res.status(200).json(client);
+  if (Number.isNaN(id)) {
+    throw new AppError("ID de cliente inválido", 400);
   }
+
+  const client = await clientsService.getById(id);
+
+  return res.status(200).json(client);
+}
 
   async create(req: Request, res: Response) {
-    const { name, phone, email } = req.body;
+  const { name, phone, email } = req.body;
 
-    const client = await clientsService.create({
-      name,
-      phone,
-      email,
-    });
-
-    return res.status(201).json(client);
+  if (!name || !phone || !email) {
+    throw new AppError(
+      "Nome, telefone e e-mail são obrigatórios",
+      400,
+    );
   }
 
+  const client = await clientsService.create({
+    name,
+    phone,
+    email,
+  });
+
+  return res.status(201).json(client);
+}
+
   async update(req: Request, res: Response) {
+    
     const id = Number(req.params.id);
     const { name, phone, email } = req.body;
 
@@ -46,8 +58,11 @@ export class ClientsController {
   async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
 
-    await clientsService.delete(id);
+    if (Number.isNaN(id)) {
+  throw new AppError("ID de cliente inválido", 400);
+}
 
+    await clientsService.delete(id);
     return res.status(204).send();
   }
 }

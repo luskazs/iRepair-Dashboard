@@ -5,6 +5,10 @@ import type { ServiceOrder, ServiceStatus } from "../../types";
 interface ServiceCardProps {
   os: ServiceOrder;
   onDelete: (id: number) => void;
+  onStatusChange: (
+    id: number,
+    status: ServiceStatus,
+  ) => Promise<void>;
 }
 function getStatusLabel(status: ServiceStatus) {
   switch(status) {
@@ -31,7 +35,7 @@ function getStatusStyle(status: ServiceStatus) {
   }
 }
 //Crie um componente chamado ServiceCard. Ele recebe um objeto de props que segue a interface ServiceCardProps e, ao recebê-lo, extraia imediatamente as propriedades os e onDelete para que possam ser usadas diretamente dentro do componente."
-export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
+export const ServiceCard = ({ os, onDelete, onStatusChange }: ServiceCardProps) => {
   //em onClick, temos uma arrow function assim () => onDelete(os.id), aqui a gente ta  passando a funcao, então se fosse só assim onClick = {onDelete(os.id)}, a funcao ia ser executada automaticamente, aí ela ja seria deletada sem nem ter clicado. Como onDelete = handleDelete, aí a gente executa a funcao que ta la no dashboard
 
   // na parte de ServiceCard = ({ os, onDelete }: ServiceCardProps), inves de fazer a seguinte tipagem: ServiceCard = (props: ServiceCardProps), e ficar usando props.os e props.onDelete, a gente ja tira de dentro do objeto o que a gente vai utilizar, ficando daquele jeito encima, então nao preciso escrever nada.nada, apenas o os e o onDelete
@@ -46,9 +50,28 @@ export const ServiceCard = ({ os, onDelete }: ServiceCardProps) => {
       </button>
 
       <div className="flex items-center justify-between mb-3">
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${getStatusStyle(os.status)}`}>
-          {getStatusLabel(os.status)}
-        </span>
+        <select
+  value={os.status}
+  onChange={(event) =>
+    void onStatusChange(
+      os.id,
+      event.target.value as ServiceStatus,
+    )
+  }
+  className={`text-xs font-semibold px-2.5 py-1 rounded-full border outline-none cursor-pointer ${getStatusStyle(os.status)}`}
+>
+  <option value="open">
+    Aberto
+  </option>
+
+  <option value="in_progress">
+    Em andamento
+  </option>
+
+  <option value="done">
+    Finalizado
+  </option>
+</select>
         <span className="text-xs text-slate-500">ID: #{os.id}</span>
       </div>
 

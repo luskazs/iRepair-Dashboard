@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { ServiceOrdersService } from "./service_orders.service.js";
-
+import { AppError } from "../../utils/AppError.js";
 const serviceOrdersService = new ServiceOrdersService();
 
 export class ServiceOrdersController {
@@ -19,22 +19,42 @@ export class ServiceOrdersController {
   }
 
   async create(req: Request, res: Response) {
-    const {
-      clientId,
-      device,
-      issue,
-      status,
-    } = req.body;
+  const {
+    clientId,
+    device,
+    issue,
+    status,
+  } = req.body;
 
-    const order = await serviceOrdersService.create({
-      clientId,
-      device,
-      issue,
-      status,
-    });
-
-    return res.status(201).json(order);
+  if (!clientId || !device || !issue) {
+    throw new AppError(
+      "Cliente, dispositivo e problema são obrigatórios",
+      400,
+    );
   }
+
+  const validStatuses = [
+    "open",
+    "in_progress",
+    "done",
+  ];
+
+  if (status && !validStatuses.includes(status)) {
+    throw new AppError(
+      "Status da ordem de serviço inválido",
+      400,
+    );
+  }
+
+  const order = await serviceOrdersService.create({
+    clientId,
+    device,
+    issue,
+    status,
+  });
+
+  return res.status(201).json(order);
+}
 
   async update(req: Request, res: Response) {
     const id = Number(req.params.id);

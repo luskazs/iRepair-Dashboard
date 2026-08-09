@@ -20,5 +20,5 @@ app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 app.use("/clients", clientsRoutes);
-app.use("/service_orders", serviceOrdersRoutes);
+app.use("/service-orders", serviceOrdersRoutes);
 app.use(errorMiddleware);

@@ -1,5 +1,5 @@
 import { ServiceCard } from "./ServiceCard";
-import type { ServiceOrder } from "../../types";
+import type { ServiceOrder,ServiceStatus } from "../../types";
 
 
 interface ServiceOrderListProps {
@@ -10,6 +10,10 @@ interface ServiceOrderListProps {
 
   onDelete: (id: number) => void;
 
+  onStatusChange: (
+    id: number,
+    status: ServiceStatus,
+  ) => Promise<void>;
 }
 
 
@@ -21,6 +25,8 @@ export const ServiceOrderList = ({
   isLoading,
 
   onDelete,
+
+  onStatusChange,
 
 }: ServiceOrderListProps) => {
 
@@ -72,7 +78,7 @@ export const ServiceOrderList = ({
           os={os}
 
           onDelete={onDelete}
-
+        onStatusChange={onStatusChange}
         />
 
       ))}

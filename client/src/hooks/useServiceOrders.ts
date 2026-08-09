@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
-import type { Client, ServiceOrder } from "../types";
+import type { Client, ServiceOrder,ServiceStatus } from "../types";
 
 export const useServiceOrders = () => {
   const [orders, setOrders] = useState<ServiceOrder[]>([]);
@@ -76,12 +76,29 @@ export const useServiceOrders = () => {
     }
   };
 
+const updateOrderStatus = async (
+  id: number,
+  status: ServiceStatus,
+) => {
+  try {
+    await api.put(`/service-orders/${id}`, {
+      status,
+    });
+
+    await fetchOrders();
+  } catch (error) {
+    console.error("Error updating service order:", error);
+    throw error;
+  }
+};
+
   return {
     orders,
     clients,
     isLoading,
     createOrder,
     deleteOrder,
+    updateOrderStatus,
     refreshOrders: fetchOrders,
   };
 };

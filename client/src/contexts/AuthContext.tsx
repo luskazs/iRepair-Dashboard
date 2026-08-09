@@ -18,6 +18,7 @@ interface AuthContextData {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  isAuthenticated: boolean;
 }
 
 interface AuthProviderProps {
@@ -33,6 +34,7 @@ export const AuthProvider = ({
 }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isAuthenticated = user !== null;
 
   const checkAuth = async () => {
     try {
@@ -70,15 +72,16 @@ export const AuthProvider = ({
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  value={{
+    user,
+    isLoading,
+    isAuthenticated,
+    login,
+    logout,
+  }}
+>
+  {children}
+</AuthContext.Provider>
   );
 };
 
