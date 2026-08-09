@@ -1,16 +1,25 @@
-import { Routes, Route } from 'react-router-dom';
-import { RootLayout } from './layouts/RootLayout';
-import { Dashboard } from './pages/Dashboard';
-import { Clients } from './pages/Clients';
-import { ServiceOrders } from './pages/ServiceOrders';
+import { Routes, Route } from "react-router-dom";
+import { RootLayout } from "./layouts/RootLayout";
+import { Dashboard } from "./pages/Dashboard";
+import { Clients } from "./pages/Clients";
+import { ServiceOrders } from "./pages/ServiceOrders";
+import { Login } from "./pages/Login";
+import { PrivateRoute } from "./components/auth/PrivateRoute";
 
 const App = () => {
-  return ( 
-    <Routes> // isso vem do browser router, inves de fazer um app.tsx gigante, a gente separa em paginas dependendo de onde o usuario está, fica mais limpo
-      <Route path="/" element={<RootLayout />}> // essa aqui é a rota mãe
-        <Route index element={<Dashboard />} /> // todos os filhos usam o RootLayout como "base", o index element = "/", então a aba padrão com só o /, é o Dashboard
-        <Route path="clients" element={<Clients />} />
-        <Route path="service-orders" element={<ServiceOrders />} />
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="clients" element={<Clients />} />
+          <Route
+            path="service-orders"
+            element={<ServiceOrders />}
+          />
+        </Route>
       </Route>
     </Routes>
   );
