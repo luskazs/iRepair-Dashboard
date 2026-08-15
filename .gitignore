@@ -10,7 +10,17 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+
+generated/prisma/
+
+.env
+.env.local
+.env.*.local
+
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
 
 # Editor directories and files
 .vscode/*

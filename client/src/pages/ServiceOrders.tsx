@@ -11,6 +11,7 @@ export const ServiceOrders = () => {
   isLoading,
   createOrder,
   deleteOrder,
+  updateOrderStatus
 } = useServiceOrders();
 
 const {
@@ -69,6 +70,7 @@ const {
         orders={orders}
         isLoading={isLoading}
         onDelete={deleteOrder}
+        onStatusChange={updateOrderStatus}
       />
     </div>
   );
