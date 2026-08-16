@@ -10,18 +10,6 @@ interface ServiceCardProps {
     status: ServiceStatus,
   ) => Promise<void>;
 }
-function getStatusLabel(status: ServiceStatus) {
-  switch(status) {
-    case "open":
-      return "Aberto";
-
-    case "in_progress":
-      return "Em andamento";
-
-    case "done":
-      return "Finalizado";
-  }
-}
 function getStatusStyle(status: ServiceStatus) {
   switch(status) {
     case "open":
