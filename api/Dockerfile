@@ -1,0 +1,20 @@
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY prisma.config.ts ./
+COPY prisma ./prisma/
+
+RUN npm ci
+
+RUN npx prisma generate
+
+COPY tsconfig.json ./
+COPY src ./src/
+
+RUN npm run build
+
+EXPOSE 3030
+
+CMD ["node", "dist/src/server.js"]
