@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 export function Header() {
@@ -9,6 +9,13 @@ export function Header() {
     await logout();
     navigate("/login");
   };
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `text-sm font-medium transition-colors ${
+      isActive
+        ? "text-cyan-300"
+        : "text-slate-400 hover:text-white"
+    }`;
 
   return (
     <header className="bg-slate-900 text-white p-4 shadow-md">
@@ -22,6 +29,30 @@ export function Header() {
             Service Orders Dashboard
           </p>
         </div>
+
+        <nav className="flex items-center gap-6">
+          <NavLink
+            to="/"
+            end
+            className={navLinkClass}
+          >
+            Dashboard
+          </NavLink>
+
+          <NavLink
+            to="/clients"
+            className={navLinkClass}
+          >
+            Clientes
+          </NavLink>
+
+          <NavLink
+            to="/service-orders"
+            className={navLinkClass}
+          >
+            Ordens
+          </NavLink>
+        </nav>
 
         <div className="flex items-center gap-4">
           <span className="text-sm text-slate-400">

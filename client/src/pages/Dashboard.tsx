@@ -6,6 +6,7 @@ export const Dashboard = () => {
     orders,
     isLoading,
     deleteOrder,
+    updateOrderStatus,
   } = useServiceOrders();
 
   return (
@@ -24,6 +25,7 @@ export const Dashboard = () => {
         orders={orders}
         isLoading={isLoading}
         onDelete={deleteOrder}
+        onStatusChange={updateOrderStatus}
       />
     </div>
   );
