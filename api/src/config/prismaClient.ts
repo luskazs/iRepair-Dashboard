@@ -3,11 +3,11 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "../../generated/prisma/client.js";
 
 const adapter = new PrismaMariaDb({
-  host: "localhost",
-  port: 3306,
-  user: "root",
+  host: process.env.DATABASE_HOST ?? "localhost",
+  port: Number(process.env.DATABASE_PORT ?? 3306),
+  user: process.env.DATABASE_USER ?? "root",
   password: process.env.DATABASE_PASSWORD!,
-  database: "irepair_db",
+  database: process.env.DATABASE_NAME ?? "irepair_db",
   connectionLimit: 5,
 });
 

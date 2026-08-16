@@ -1,4 +1,4 @@
-# Logs
+
 logs
 *.log
 npm-debug.log*
@@ -16,13 +16,15 @@ generated/prisma/
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
 
 .agents/
 .claude/
 .windsurf/
 skills-lock.json
 
-# Editor directories and files
+
 .vscode/*
 !.vscode/extensions.json
 .idea
